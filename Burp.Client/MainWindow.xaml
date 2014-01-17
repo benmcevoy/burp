@@ -1,0 +1,96 @@
+﻿<Controls:MetroWindow x:Class="Burp.Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:burp="clr-namespace:Burp.Client"
+        Icon="mahapps.metro.logo2.ico"
+        ShowTitleBar="True"
+        ShowIconOnTitleBar="true"
+        Title="BuRp" Height="640" Width="500">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro.Resources;component/Icons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <burp:DefaultAvatarValueConverter x:Key="DefaultAvatarValueConverter" />
+        </ResourceDictionary>
+
+        
+        
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64" />
+            <RowDefinition />
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+            <Image Source="{Binding Source.Avatar, Converter={StaticResource DefaultAvatarValueConverter}}" Height="48" Width="48"  >
+                <Image.Clip>
+                    <RectangleGeometry Rect="0,0,46,46" RadiusX="3" RadiusY="3" />
+                </Image.Clip>
+            </Image>
+            <TextBlock Margin="5,5,0,0"  Text="{Binding Source.Name}" FontSize="40"  />
+        </StackPanel>
+        
+
+        <ScrollViewer Margin="0,0,0,20" Grid.Row="1" Grid.Column="0" x:Name="MessageScroller">
+            <ItemsControl  ItemsSource="{Binding Messages}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Image Source="{Binding Source.Avatar, Converter={StaticResource DefaultAvatarValueConverter}}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Height="32" Width="32"  >
+                                <Image.Clip>
+                                    <RectangleGeometry Rect="0,0,30,30" RadiusX="3" RadiusY="3" />
+                                </Image.Clip>
+                            </Image>
+                            
+                            <Grid Grid.Column="1" Grid.Row="0">
+                                <TextBlock Text="{Binding Source.Name}" FontStyle="Italic" Foreground="#FF41B1E1" FontWeight="Bold" />
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding DateTime, StringFormat='{}{0:HH:mm:ss tt}'}" FontStyle="Italic" Foreground="#FAAA"/>
+                            </Grid>
+
+                            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Text}"/>
+                            
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        
+        <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding Message}" AcceptsReturn="True" PreviewKeyDown="TextBox_PreviewKeyDown" />
+
+        <Button Grid.Row="3" Grid.Column="0" Command="{Binding SendCommand}" Content="Send"/>
+
+        <ItemsControl Margin="20,0,0,0" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ConnectedClients}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name, StringFormat='{}{0} is online'}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</Controls:MetroWindow>
